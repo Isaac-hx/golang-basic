@@ -83,15 +83,15 @@ func main() {
 	//Saya ingin tau berapa banyak jumlah bilangan yang kurang dari 0 dan data semua bilangan yang kurang dari 0
 
 	findNumberLessThenN := func(limit int, n ...int) (int, func() []int) {
-		var listLessThenZero []int
+		var listLessThenLimit []int
 		for _, iter := range n {
 			if iter < limit {
-				listLessThenZero = append(listLessThenZero, iter)
+				listLessThenLimit = append(listLessThenLimit, iter)
 			}
 		}
 		//fungsi sebagai nilai kembalian
-		return len(listLessThenZero), func() []int {
-			return listLessThenZero
+		return len(listLessThenLimit), func() []int {
+			return listLessThenLimit
 
 		}
 	}
