@@ -1,56 +1,16 @@
 package main
 
 import (
+	"encoding/json"
 	"errors"
 	"fmt"
+	"golang-basic/library"
+	"net/http"
+	"strconv"
 	"strings"
 )
 
 func main() {
-	var data map[string]string
-	data = map[string]string{}
-	fmt.Println("Hello World !!")
-	data2 := []map[string]string{} //deklarasi yang cukup simple untuk di implementasikan
-	data2 = append(data2, map[string]string{"Nama": "Dimas"})
-	data3 := []map[string][]string{}
-	su := []map[string]string{}
-	su = append(su, map[string]string{
-		"Nama": "Dimas",
-	},
-		map[string]string{
-			"Nama": "Reza",
-		},
-	)
-	data3 = append(data3, map[string][]string{
-		"FST": {"Teknik Informatika", "Sistem Informasi", "Management Informasi"},
-	},
-		map[string][]string{
-			"FIP": {"Pend.Bahasa Inggris", "Pend.Eknomi", "Pend.Matematika", "Pend.IPA"},
-		},
-	)
-
-	data["Nama"] = "Dimas Ananda Riyadi"
-	addData(&data2, "Azzahra")
-	addData(&data2, "Nabila")
-	addData(&data2, "Untirta")
-	printData(data2)
-	updateData(data2, 1, "Azahra sangat cantik")
-	deleteData(&data2, "Nabila")
-	fmt.Println(su)
-	fmt.Println(data3)
-	fmt.Println(data3, "ini adalah data3")
-	for row, data := range data3 {
-		fmt.Println(row, data)
-	}
-
-	xs := map[string][]string{}
-	xs["Dimas"] = []string{"tinggi", "ganteng", "pinter"}
-	xs["Azzahra"] = []string{"tinggi", "cantik", "pinter"}
-	for index, _ := range xs {
-		fmt.Println(index)
-		fmt.Println(xs[index])
-	}
-	fmt.Println(xs["Dimas"])
 
 	setence1 := "Hello"
 	setence2 := []string{"Sir", "Ananda"}
@@ -108,37 +68,125 @@ func main() {
 	bunchOfWord := []string{"dimas", "onondo", "riyadi"}
 	fmt.Println(filter(bunchOfWord, filteredWordMoreThan5))
 	fmt.Println(filter(bunchOfWord, filteredWordContainsO))
+
+	//execute filter func findAzzahra
+	fmt.Println(filter([]string{"azzahra", "ara", "ayu", "AZZAHRA"}, findAzzahra))
+
+	//execute file pointer
+	Pointer()
+
+	//execute file struct
+	Struct()
+
+	//execute file method
+	Method()
+
+	//execute package init library
+	fmt.Println(library.OSLauncher.OSName)
+	fmt.Println(library.OSLauncher.KernelName)
+
+	//execute file interface
+	Interface()
+
+	//execute file interface-2
+	Interface2()
+
+	//execute file reflect
+	Reflect()
+
+	// //execute file goroutine
+	// Goroutine()
+
+	// //execute file channel
+	// Channel()
+
+	// //execute file buffer
+	// Buffer()
+
+	// //execute file SelectChannel
+	// SelectChannel()
+
+	// //execute file rangeClose
+	// RangeClose()
+
+	// //execute file timeout
+	// TimesOut()
+
+	// //execute file deferExit
+	// DeferExit()
+
+	//execute file errors
+	// GetErrors()
+
+	//Menghitung berapa lama waktu eksekusi dari variabel start ke variabel duration
+	// start := time.Now()
+	// time.Sleep(5 * time.Second)
+	// duration := time.Since(start)
+	// fmt.Println("time elapsed in seconds : ", duration.Seconds())
+	// fmt.Println("time elapsed in minutes : ", duration.Minutes())
+	// fmt.Println("time elapsed in hours : ", duration.Hours())
+
+	// //Menghitung selisih lama waktu eksekusi dari variabel t1 ke t2
+	// t1 := time.Now()
+	// time.Sleep(10 * time.Second)
+	// t2 := time.Now()
+
+	// timeGap := t2.Sub(t1)
+
+	// fmt.Println("Selisih waktu dari t1 ke t2 : ", timeGap.Seconds())
+
+	// //execute file regex
+	// RegexP()
+
+	// //execute file args
+	// Flag()
+
+	// execute file exec
+	// Exec()
+
+	//execute file webserver
+	// WebServer()
+
+	//execute file jsonParse
+	// JsonParse()
+
+	//execute file webservice
+	// Webservice()
+
+	//test
+	dataTest, err := fetchBook()
+	if err != nil {
+		fmt.Println(err.Error())
+	}
+
+	unitTestGet(dataTest, ListofBooks)
 }
 
+func unitTestGet(input []Book, unit []Book) {
+	for iter, data := range input {
+		if data == unit[iter] {
+			fmt.Println(iter+1, "Test succes!!")
+			continue
+		}
+		fmt.Println(iter+1, "Test Failed!!")
+	}
+}
+
+func validateNumber(input string) error {
+	convertToFloat, err := strconv.ParseFloat(input, 64)
+	if err != nil {
+		return errors.New("Error : input bukan angka desimal yang valid!")
+	}
+	convertToInt := int64(convertToFloat)
+	convertToString := strconv.Itoa(int(convertToInt))
+	fmt.Println("Angka desimal (Float64) : ", convertToFloat)
+	fmt.Println("Angka integer (Int64) : ", convertToInt)
+	fmt.Println("Angka string (String) : ", convertToString)
+	return nil
+}
 func greet(setence1 string, setence2 []string) string {
 	joinSetence2 := strings.Join(setence2, " ")
 	return setence1 + " " + joinSetence2
-}
-
-// fungsi ini digunakan untuk menambah data kedalam map slice
-func addData(data *[]map[string]string, nama string) {
-	*data = append(*data, map[string]string{"Nama": nama})
-}
-
-// fungsi ini digunakan untuk memprint semua isi data dari map
-func printData(data []map[string]string) {
-	for index, row := range data {
-		fmt.Println(index+1, row["Nama"])
-	}
-}
-
-// fungsi ini digunakan untuk menghapus data dari slice map
-func deleteData(data *[]map[string]string, nama string) {
-	for i := len(*data) - 1; i >= 0; i-- { // iterate in reverse to avoid index shifting issues
-		if (*data)[i]["Nama"] == nama {
-			*data = append((*data)[:i], (*data)[i+1:]...) // remove the element
-		}
-	}
-}
-
-// fungsi ini digunakan untuk mengupdate nilai data pada slice map
-func updateData(data []map[string]string, idx int, nama string) {
-	data[idx]["Nama"] = nama
 }
 
 func divideNumber(m, n int) (int, bool) {
@@ -205,4 +253,53 @@ func filteredWordContainsO(each string) string {
 	}
 
 	return each
+}
+
+// if word == azzahra
+func findAzzahra(each string) string {
+	if each == "azzahra" || each == "Azzahra" || each == "AZZAHRA" {
+		return fmt.Sprintf("Ketemu!!, %s aku sayang kamu!", each)
+	} else if each == "ara" {
+		return fmt.Sprintf("Ketemu !!,%s apakah kamu mau jadi pacarku?", each)
+
+	}
+	return ""
+}
+
+var baseUrl = "http://localhost:8085"
+
+func fetchBook() ([]Book, error) {
+	var err error
+	//Mendeklarasikan nilai dereference instance object http.client
+	var client = &http.Client{}
+	var data []Book
+
+	//Memanggil fungsi http.NewRequest yang mengembalikan nilai pointer reference http.Request
+	//Parameter pertama,berisikan tipe method yang akan digunakan seperti `POST` atau `GET`
+	//Parameter kedua,adalah tujuan url yang ingin di request
+	//Parameter ketiga,adalah form data request jika terdapat body
+	req, err := http.NewRequest("GET", baseUrl+"/books", nil)
+	if err != nil {
+		return nil, err
+	}
+
+	//Memanggil method yang ada pada instance `client` dan mengeksekusi method Do
+	//,dengan menyisipkan argumen req yang telah dibuat object sebelumnya pada variabel `req`
+	//Method ini akan mengembalikan object http.Response
+	res, err := client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+
+	//response data yang telah diambil perlu diclose setelah tidak dipakai.
+	defer res.Body.Close()
+
+	//data pada variabel `res` yang terdapat pada property body
+	//Mendecode data menjadi data bertipe pointer `&data`
+	err = json.NewDecoder(res.Body).Decode(&data)
+	if err != nil {
+		return nil, err
+	}
+	return data, nil
+
 }
