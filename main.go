@@ -8,7 +8,6 @@ import (
 	"net/http"
 	"strconv"
 	"strings"
-	"time"
 )
 
 func main() {
@@ -163,8 +162,10 @@ func main() {
 	// unitTestGet(dataTest, ListofBooks)
 
 	//execute file Wg Sync group
-	WaitGroupExec()
-	time.Sleep(1 * time.Second)
+	// WaitGroupExec()
+
+	//execute file wg sync mutex
+	MutexExcute()
 
 }
 
