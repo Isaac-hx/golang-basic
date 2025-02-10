@@ -8,6 +8,7 @@ import (
 	"net/http"
 	"strconv"
 	"strings"
+	"time"
 )
 
 func main() {
@@ -154,12 +155,17 @@ func main() {
 	// Webservice()
 
 	//test
-	dataTest, err := fetchBook()
-	if err != nil {
-		fmt.Println(err.Error())
-	}
+	// dataTest, err := fetchBook()
+	// if err != nil {
+	// 	fmt.Println(err.Error())
+	// }
 
-	unitTestGet(dataTest, ListofBooks)
+	// unitTestGet(dataTest, ListofBooks)
+
+	//execute file Wg Sync group
+	WaitGroupExec()
+	time.Sleep(1 * time.Second)
+
 }
 
 func unitTestGet(input []Book, unit []Book) {
